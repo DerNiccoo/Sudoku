@@ -52,6 +52,7 @@
             this.lösenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.anleitungToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.log = new System.Windows.Forms.RichTextBox();
+            this.eindeutigeFelderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.spielfeld)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -203,7 +204,8 @@
             // 
             this.lösungshilfeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.möglicheEingabenToolStripMenuItem,
-            this.fehlerhafteEingabeToolStripMenuItem});
+            this.fehlerhafteEingabeToolStripMenuItem,
+            this.eindeutigeFelderToolStripMenuItem});
             this.lösungshilfeToolStripMenuItem.Name = "lösungshilfeToolStripMenuItem";
             this.lösungshilfeToolStripMenuItem.Size = new System.Drawing.Size(86, 20);
             this.lösungshilfeToolStripMenuItem.Text = "Lösungshilfe";
@@ -211,14 +213,14 @@
             // möglicheEingabenToolStripMenuItem
             // 
             this.möglicheEingabenToolStripMenuItem.Name = "möglicheEingabenToolStripMenuItem";
-            this.möglicheEingabenToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.möglicheEingabenToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.möglicheEingabenToolStripMenuItem.Text = "Mögliche Eingaben";
             this.möglicheEingabenToolStripMenuItem.Click += new System.EventHandler(this.möglicheEingabenToolStripMenuItem_Click);
             // 
             // fehlerhafteEingabeToolStripMenuItem
             // 
             this.fehlerhafteEingabeToolStripMenuItem.Name = "fehlerhafteEingabeToolStripMenuItem";
-            this.fehlerhafteEingabeToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.fehlerhafteEingabeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.fehlerhafteEingabeToolStripMenuItem.Text = "Fehlerhafte Eingabe";
             this.fehlerhafteEingabeToolStripMenuItem.Click += new System.EventHandler(this.fehlerhafteEingabeToolStripMenuItem_Click);
             // 
@@ -259,6 +261,13 @@
             this.log.TabIndex = 2;
             this.log.Text = "";
             this.log.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
+            // 
+            // eindeutigeFelderToolStripMenuItem
+            // 
+            this.eindeutigeFelderToolStripMenuItem.Name = "eindeutigeFelderToolStripMenuItem";
+            this.eindeutigeFelderToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.eindeutigeFelderToolStripMenuItem.Text = "Eindeutige Felder";
+            this.eindeutigeFelderToolStripMenuItem.Click += new System.EventHandler(this.eindeutigeFelderToolStripMenuItem_Click);
             // 
             // UI_Form
             // 
@@ -307,6 +316,7 @@
         private System.Windows.Forms.ToolStripMenuItem spielstand1ToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem spielstand2ToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem spielstand3ToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem eindeutigeFelderToolStripMenuItem;
     }
 }
 

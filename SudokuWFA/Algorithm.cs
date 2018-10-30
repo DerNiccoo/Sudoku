@@ -20,12 +20,6 @@ namespace SudokuWFA
             UpdateMap(numbers);
         }
 
-        //TODO: ///////DELETE THIS///////////
-        public void AlgorithmUpdate(int[][] numbers)
-        {
-            mapStart = numbers;
-        }
-
         public int[][] Solve(int[][] gamefield = null, int x = -1, int y = -1, int tryNumber = -1)
         {
             int[][] result;

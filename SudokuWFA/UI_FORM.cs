@@ -65,6 +65,7 @@ namespace SudokuWFA
                 sudoku.MoveFocus(e.KeyValue);
             }
             else if (e.Control && e.KeyValue == 90)
+
             {
                 sudoku.StepBack();
             }
@@ -95,6 +96,7 @@ namespace SudokuWFA
             sudoku = new Sudoku(spielfeld.Width, log, level, difficulty);
             sudoku.fieldNumberHints = möglicheEingabenToolStripMenuItem.Checked;
             sudoku.wrongNumberHints = fehlerhafteEingabeToolStripMenuItem.Checked;
+            sudoku.uniqueNumberHints = eindeutigeFelderToolStripMenuItem.Checked;
 
             zurückToolStripMenuItem.Enabled = false;
 
@@ -220,6 +222,13 @@ namespace SudokuWFA
             sudoku.fieldNumberHints = möglicheEingabenToolStripMenuItem.Checked;
             sudoku.wrongNumberHints = fehlerhafteEingabeToolStripMenuItem.Checked;
             log.BeginInvoke(new Action(() => Toolbox.LogTextEvent(log, Color.Black, "Spielstand " + slot + ": " + diff + " wurde geladen.")));
+            spielfeld.Refresh();
+        }
+
+        private void eindeutigeFelderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            sudoku.uniqueNumberHints = !sudoku.uniqueNumberHints;
+            eindeutigeFelderToolStripMenuItem.Checked = sudoku.uniqueNumberHints;
             spielfeld.Refresh();
         }
     }

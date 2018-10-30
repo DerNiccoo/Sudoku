@@ -11,6 +11,7 @@ namespace SudokuWFA
     {
         public bool fieldNumberHints = false;
         public bool wrongNumberHints = false;
+        public bool uniqueNumberHints = false;
 
         public string difficulty { get; private set; }
         public int[][] map { get; private set; }
@@ -24,27 +25,28 @@ namespace SudokuWFA
         private RichTextBox log;
 
         private long solveTime;
-        private bool[][] preset;
+        private bool[][] preset;    //true an vorgegebenen Zahlen
         private int[][] solution;
         private List<int[][]> history = new List<int[][]>();
         private List<int[]> wrongNumbers = new List<int[]>();   //0 = X; 1 = y
+        private List<int[]> uniqueNumbers = new List<int[]>();   //0 = X; 1 = y
 
         public Sudoku(int fieldSize, RichTextBox log, int[][] level = null, string diff = null, int[][] saveGame = null)
         {
             if (level != null)
                 map = level;
 
-            presetMap   = Toolbox.DeepCopy(map);      //For load and save
-            difficulty  = diff;                       //Just for load and save
-            boundary    = new int[] { 3, 1 };         //Boarder Thickness for Resize
-            focus       = new int[] { 0, -1, -1 };    //Current Focus
-            preset      = loadPreset(map);            //True for every field that belongs to the game field
-            algorithm   = new Algorithm(map, log);    //To solve the Game
-            this.log    = log;                        //For some Log Msg
+            presetMap = Toolbox.DeepCopy(map);      //For load and save
+            difficulty = diff;                       //Just for load and save
+            boundary = new int[] { 3, 1 };         //Boarder Thickness for Resize
+            focus = new int[] { 0, -1, -1 };    //Current Focus
+            preset = loadPreset(map);            //True for every field that belongs to the game field
+            algorithm = new Algorithm(map, log);    //To solve the Game
+            this.log = log;                        //For some Log Msg
 
             Stopwatch s = new Stopwatch();
             s.Start();
-            solution    = algorithm.Solve();          //Solve for reference
+            solution = algorithm.Solve();          //Solve for reference
             s.Stop();
             solveTime = s.ElapsedMilliseconds;
 
@@ -53,14 +55,19 @@ namespace SudokuWFA
 
             if (saveGame != null)
                 map = saveGame;
+
+            UpdateNumberHintLists();
         }
 
         public void Draw(Graphics graphics)
         {
             DrawGamefield(graphics);
 
+            if (uniqueNumberHints)
+                DrawNumberHints(graphics, uniqueNumbers, Color.Orange);
+
             if (wrongNumberHints)
-                DrawWrongNumbers(graphics);
+                DrawNumberHints(graphics, wrongNumbers, Color.Red);
 
             DrawFocus(graphics);
             DrawNumber(graphics);
@@ -73,7 +80,7 @@ namespace SudokuWFA
 
             history.Add(Toolbox.DeepCopy(map));
             map[focus[2]][focus[1]] = number;
-            UpdateWrongNumbers();
+            UpdateNumberHintLists();
 
             return checkWinCondition();
         }
@@ -84,7 +91,7 @@ namespace SudokuWFA
             {
                 int thickness = i % 3 == 0 ? boundary[0] : boundary[1];
 
-                graphics.FillRectangle(Brushes.Black, mapFieldSize * i + Toolbox.PreviousBoundary(boundary, i) , 0, thickness, Toolbox.BoundaryLength(boundary, fieldSize));
+                graphics.FillRectangle(Brushes.Black, mapFieldSize * i + Toolbox.PreviousBoundary(boundary, i), 0, thickness, Toolbox.BoundaryLength(boundary, fieldSize));
 
                 graphics.FillRectangle(Brushes.Black, 0, mapFieldSize * i + Toolbox.PreviousBoundary(boundary, i), Toolbox.BoundaryLength(boundary, fieldSize), thickness);
             }
@@ -103,16 +110,16 @@ namespace SudokuWFA
             graphics.DrawRectangle(new Pen(Color.Green, 2), x, y, width, height);
         }
 
-        private void DrawWrongNumbers(Graphics graphics)
+        private void DrawNumberHints(Graphics graphics, List<int[]> hintsList, Color color)
         {
-            for (int i = 0; i < wrongNumbers.Count; i++)
+            for (int i = 0; i < hintsList.Count; i++)
             {
-                int x = mapFieldSize * wrongNumbers[i][0] + Toolbox.PreviousBoundary(boundary, wrongNumbers[i][0] + 1) + 4;
-                int y = mapFieldSize * wrongNumbers[i][1] + Toolbox.PreviousBoundary(boundary, wrongNumbers[i][1] + 1) + 4;
+                int x = mapFieldSize * hintsList[i][0] + Toolbox.PreviousBoundary(boundary, hintsList[i][0] + 1) + 4;
+                int y = mapFieldSize * hintsList[i][1] + Toolbox.PreviousBoundary(boundary, hintsList[i][1] + 1) + 4;
                 int height = mapFieldSize - 8;
                 int width = mapFieldSize - 8;
 
-                graphics.DrawRectangle(new Pen(Color.Red, 2), x, y, width, height);
+                graphics.DrawRectangle(new Pen(color, 2), x, y, width, height);
             }
         }
 
@@ -178,7 +185,7 @@ namespace SudokuWFA
 
             history.Add(Toolbox.DeepCopy(map));
             map[focus[2]][focus[1]] = 0;
-            UpdateWrongNumbers();
+            UpdateNumberHintLists();
         }
 
         public bool StepBack()
@@ -188,7 +195,7 @@ namespace SudokuWFA
 
             map = history[history.Count - 1];
             history.RemoveAt(history.Count - 1);
-            UpdateWrongNumbers();
+            UpdateNumberHintLists();
 
             if (history.Count < 1)
                 return false;
@@ -277,16 +284,25 @@ namespace SudokuWFA
             Log("Das Sudoku wurde in " + algorithm.iterations + " Iterationen und " + solveTime + " ms gelöst.");
         }
 
-        private void UpdateWrongNumbers()
+        private void UpdateNumberHintLists()
         {
-            wrongNumbers = new List<int[]>();
+            int[][] mapWithNoFails = FieldWithoutWrongNumbers();
 
+            wrongNumbers = new List<int[]>();
+            uniqueNumbers = new List<int[]>();
+            
             for (int y = 0; y < map.Length; y++)
             {
                 for (int x = 0; x < map[y].Length; x++)
                 {
+                    if (preset[y][x])
+                        continue;
+
                     if (map[y][x] != 0 && map[y][x] != solution[y][x])
                         wrongNumbers.Add(new int[] { x, y });
+
+                    if (map[y][x] != solution[y][x] && algorithm.AddFieldPossibilities(x, y, mapWithNoFails, false, true).Count == 1)
+                        uniqueNumbers.Add(new int[] { x, y });
                 }
             }
         }
@@ -377,10 +393,15 @@ namespace SudokuWFA
         {
             int[][] result = Toolbox.DeepCopy(map);
 
-            for (int i = 0; i < wrongNumbers.Count; i++)
+            for (int y = 0; y < map.Length; y++)
             {
-                result[wrongNumbers[i][1]][wrongNumbers[i][0]] = 0;
+                for (int x = 0; x < map[y].Length; x++)
+                {
+                    if (result[y][x] != 0 && solution[y][x] != result[y][x])
+                        result[y][x] = 0;
+                }
             }
+
 
             return result;
         }
