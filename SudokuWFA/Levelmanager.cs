@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 
 namespace SudokuWFA
@@ -74,6 +75,7 @@ namespace SudokuWFA
                     return lines[0];
             } catch (Exception e)
             {
+                Debug.WriteLine("Die Datei Sudokus\\save" + slot + ".txt könnte nicht gefunden werden. Error Msg: " + e.Message );
                 return null;
             }
             return null;              
@@ -88,6 +90,7 @@ namespace SudokuWFA
             }
             catch (Exception e)
             {
+                Debug.WriteLine("Die Datei Sudokus\\save" + slot + ".txt könnte nicht gefunden werden. Error Msg: " + e.Message);
                 return;
             }
             diff = lines[0].Split(' ')[0];

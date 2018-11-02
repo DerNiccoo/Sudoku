@@ -69,7 +69,8 @@ namespace SudokuWFA
             {
                 sudoku.StepBack();
             }
-            spielfeld.Refresh();
+            spielfeld.Refresh(); 
+            e.SuppressKeyPress = true; //Suppress the Windows "Ding" Sound
         }
 
         private void gameWon()
