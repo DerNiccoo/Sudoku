@@ -47,12 +47,12 @@
             this.lösungshilfeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.möglicheEingabenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fehlerhafteEingabeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.eindeutigeFelderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zurückToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tippToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lösenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.anleitungToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.log = new System.Windows.Forms.RichTextBox();
-            this.eindeutigeFelderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.spielfeld)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -62,7 +62,7 @@
             this.spielfeld.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.spielfeld.Location = new System.Drawing.Point(29, 34);
+            this.spielfeld.Location = new System.Drawing.Point(29, 32);
             this.spielfeld.Name = "spielfeld";
             this.spielfeld.Size = new System.Drawing.Size(500, 500);
             this.spielfeld.TabIndex = 0;
@@ -213,16 +213,23 @@
             // möglicheEingabenToolStripMenuItem
             // 
             this.möglicheEingabenToolStripMenuItem.Name = "möglicheEingabenToolStripMenuItem";
-            this.möglicheEingabenToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.möglicheEingabenToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.möglicheEingabenToolStripMenuItem.Text = "Mögliche Eingaben";
             this.möglicheEingabenToolStripMenuItem.Click += new System.EventHandler(this.möglicheEingabenToolStripMenuItem_Click);
             // 
             // fehlerhafteEingabeToolStripMenuItem
             // 
             this.fehlerhafteEingabeToolStripMenuItem.Name = "fehlerhafteEingabeToolStripMenuItem";
-            this.fehlerhafteEingabeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.fehlerhafteEingabeToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.fehlerhafteEingabeToolStripMenuItem.Text = "Fehlerhafte Eingabe";
             this.fehlerhafteEingabeToolStripMenuItem.Click += new System.EventHandler(this.fehlerhafteEingabeToolStripMenuItem_Click);
+            // 
+            // eindeutigeFelderToolStripMenuItem
+            // 
+            this.eindeutigeFelderToolStripMenuItem.Name = "eindeutigeFelderToolStripMenuItem";
+            this.eindeutigeFelderToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.eindeutigeFelderToolStripMenuItem.Text = "Eindeutige Felder";
+            this.eindeutigeFelderToolStripMenuItem.Click += new System.EventHandler(this.eindeutigeFelderToolStripMenuItem_Click);
             // 
             // zurückToolStripMenuItem
             // 
@@ -254,6 +261,8 @@
             // 
             // log
             // 
+            this.log.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.log.Location = new System.Drawing.Point(0, 540);
             this.log.Name = "log";
             this.log.ReadOnly = true;
@@ -261,13 +270,6 @@
             this.log.TabIndex = 2;
             this.log.Text = "";
             this.log.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
-            // 
-            // eindeutigeFelderToolStripMenuItem
-            // 
-            this.eindeutigeFelderToolStripMenuItem.Name = "eindeutigeFelderToolStripMenuItem";
-            this.eindeutigeFelderToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.eindeutigeFelderToolStripMenuItem.Text = "Eindeutige Felder";
-            this.eindeutigeFelderToolStripMenuItem.Click += new System.EventHandler(this.eindeutigeFelderToolStripMenuItem_Click);
             // 
             // UI_Form
             // 

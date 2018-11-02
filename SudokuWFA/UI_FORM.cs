@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -11,6 +12,8 @@ namespace SudokuWFA
         private List<ToolStripItem> loadItems = new List<ToolStripItem>();
         private List<ToolStripItem> saveItems = new List<ToolStripItem>();
 
+        private int minSize = 500;
+
         public UI_Form()
         {
             InitializeComponent();
@@ -18,6 +21,7 @@ namespace SudokuWFA
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            MinimumSize = new Size(569, 671);
             //TODO: Schauen ob ein Level im Speicher liegt
             NewLevel("Leicht", false);
             loadItems.Add(spielstand1ToolStripMenuItem);
@@ -39,6 +43,12 @@ namespace SudokuWFA
         private void spielfeld_Resize(object sender, EventArgs e)
         {
             // TODO: Berechnung der Nummerpositionen
+            int newMinSize = spielfeld.Size.Width < spielfeld.Size.Height ? spielfeld.Size.Width : spielfeld.Size.Height;
+            if (newMinSize != minSize)
+            {
+                minSize = newMinSize;
+                sudoku.CalculateSizes(minSize);
+            }
             spielfeld.Refresh();
         }
 
@@ -94,7 +104,7 @@ namespace SudokuWFA
             log.Clear();
             tippToolStripMenuItem.Enabled = true;
             int[][] level = Levelmanager.GetLevel(difficulty);
-            sudoku = new Sudoku(spielfeld.Width, log, level, difficulty);
+            sudoku = new Sudoku(minSize, log, level, difficulty);
             sudoku.fieldNumberHints = möglicheEingabenToolStripMenuItem.Checked;
             sudoku.wrongNumberHints = fehlerhafteEingabeToolStripMenuItem.Checked;
             sudoku.uniqueNumberHints = eindeutigeFelderToolStripMenuItem.Checked;
@@ -219,7 +229,7 @@ namespace SudokuWFA
 
             Levelmanager.LoadSaveGame(slot, ref diff, ref field, ref preset);
 
-            sudoku = new Sudoku(spielfeld.Width, log, preset, diff, field); //TODO: FIXEN
+            sudoku = new Sudoku(spielfeld.Width, log, preset, diff, field);
             sudoku.fieldNumberHints = möglicheEingabenToolStripMenuItem.Checked;
             sudoku.wrongNumberHints = fehlerhafteEingabeToolStripMenuItem.Checked;
             log.BeginInvoke(new Action(() => Toolbox.LogTextEvent(log, Color.Black, "Spielstand " + slot + ": " + diff + " wurde geladen.")));

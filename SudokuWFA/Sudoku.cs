@@ -20,7 +20,7 @@ namespace SudokuWFA
         private int[] boundary;
         private int fieldSize;
         private int[] focus;
-        private int mapFieldSize;    // TODO: Neu berechnen bei Resize
+        private int mapFieldSize;
         private Algorithm algorithm;
         private RichTextBox log;
 
@@ -38,7 +38,6 @@ namespace SudokuWFA
 
             presetMap = Toolbox.DeepCopy(map);      //For load and save
             difficulty = diff;                       //Just for load and save
-            boundary = new int[] { 3, 1 };         //Boarder Thickness for Resize
             focus = new int[] { 0, -1, -1 };    //Current Focus
             preset = loadPreset(map);            //True for every field that belongs to the game field
             algorithm = new Algorithm(map, log);    //To solve the Game
@@ -49,9 +48,8 @@ namespace SudokuWFA
             solution = algorithm.Solve();          //Solve for reference
             s.Stop();
             solveTime = s.ElapsedMilliseconds;
-
-            this.fieldSize = fieldSize;               //Same size
-            mapFieldSize = (fieldSize - Toolbox.AllBoundary(boundary)) / 9;
+            
+            CalculateSizes(fieldSize);
 
             if (saveGame != null)
                 map = saveGame;
@@ -125,14 +123,14 @@ namespace SudokuWFA
 
         private void DrawNumber(Graphics graphics)
         {
-            using (Font myFont = new Font("Arial", 28))
+            using (Font myFont = new Font("Arial", mapFieldSize / 2))
             {
                 for (int y = 0; y < map.Length; y++)
                 {
                     for (int x = 0; x < map[y].Length; x++)
                     {
-                        int posX = fieldSize / 9 * x + 12; //TODO: Wert anhand der größe berechnen
-                        int posY = fieldSize / 9 * y + 7; //TODO: Wert anhand der größe berechnen
+                        int posX = fieldSize / 9 * x + (int)(mapFieldSize / 4.416666666);
+                        int posY = fieldSize / 9 * y + (int)(mapFieldSize / 7.5714285714);
                         if (map[y][x] != 0)
                             graphics.DrawString(map[y][x].ToString(),
                                 myFont,
@@ -360,7 +358,7 @@ namespace SudokuWFA
             return false;
         }
 
-        private void HintWithFails()    //TODO: Fehler suchen hier
+        private void HintWithFails()
         {
             string output = "";
             int[][] noFailsMap = FieldWithoutWrongNumbers();
@@ -409,6 +407,13 @@ namespace SudokuWFA
         private void Log(string logText)
         {
             log.BeginInvoke(new Action(() => Toolbox.LogTextEvent(log, Color.Black, logText)));
+        }
+
+        public void CalculateSizes(int size)
+        {
+            boundary = new int[] { 3, 1 };         //Boarder Thickness for Resize
+            fieldSize = size;                       //Same size
+            mapFieldSize = (fieldSize - Toolbox.AllBoundary(boundary)) / 9;
         }
     }
 }
