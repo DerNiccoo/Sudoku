@@ -42,7 +42,6 @@ namespace SudokuWFA
 
         private void spielfeld_Resize(object sender, EventArgs e)
         {
-            // TODO: Berechnung der Nummerpositionen
             int newMinSize = spielfeld.Size.Width < spielfeld.Size.Height ? spielfeld.Size.Width : spielfeld.Size.Height;
             if (newMinSize != minSize)
             {
@@ -241,6 +240,11 @@ namespace SudokuWFA
             sudoku.uniqueNumberHints = !sudoku.uniqueNumberHints;
             eindeutigeFelderToolStripMenuItem.Checked = sudoku.uniqueNumberHints;
             spielfeld.Refresh();
+        }
+
+        private void anleitungToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://de.wikipedia.org/wiki/Sudoku");
         }
     }
 }

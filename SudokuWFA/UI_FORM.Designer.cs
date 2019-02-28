@@ -258,6 +258,7 @@
             this.anleitungToolStripMenuItem.Name = "anleitungToolStripMenuItem";
             this.anleitungToolStripMenuItem.Size = new System.Drawing.Size(71, 20);
             this.anleitungToolStripMenuItem.Text = "Anleitung";
+            this.anleitungToolStripMenuItem.Click += new System.EventHandler(this.anleitungToolStripMenuItem_Click);
             // 
             // log
             // 
@@ -281,7 +282,7 @@
             this.Controls.Add(this.spielfeld);
             this.Controls.Add(this.menuStrip1);
             this.Name = "UI_Form";
-            this.Text = "Sudoku";
+            this.Text = "Master Sudoku";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.spielfeld)).EndInit();

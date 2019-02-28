@@ -38,12 +38,8 @@ namespace SudokuWFA
             while (!SolveByLogic(ref result))
             {
                 int[] field = LeastPossibleField();
-                if (field[2] == 0) //Deadend
-                {
-                    iterations++;
-                    return null;
-                }
-                else //Try Next iteration
+                iterations++;
+                if (field[2] != 0) 
                 {
                     List<int> possibles = new List<int>(map[field[1]][field[0]]);
                     for (int i = 0; i < possibles.Count; i++)
@@ -52,9 +48,8 @@ namespace SudokuWFA
                         if (ergebnis != null)
                             return ergebnis;
                     }
-                    iterations++;
-                    return null;
                 }
+                return null; //Deadend
             }
 
             //log.BeginInvoke(new Action(() => Toolbox.LogTextEvent(log, Color.Black, "Sudoku gelöst in " + iterations + " Iterationen.")));
